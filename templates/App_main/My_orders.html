@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Past Orders</title>
+    <style>
+        .order-search {
+            width: 100%;
+        }
+
+        .order-search input {
+            width: 100%;
+            height: 40px;
+            padding: 10px;
+            outline: none;
+        }
+
+        .order-search input:focus {
+            border-style: none;
+            outline: none;
+            box-shadow: 1px 1px 3px #e1536f;
+        }
+
+        .order-search button {
+            border: none;
+            background-color: white;
+            display: none;
+        }
+
+        .order-id-status {
+            background-color: #c4c4c4;
+            padding: 8px 12px;
+        }
+
+        .order-id-status small {
+            text-align: left;
+        }
+
+        .order-id-status .status {
+            text-align: right;
+            font-weight: 500;
+            margin-bottom: 0 !important;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-light bg-white" style="padding: 0;">
+    <div class="container-fluid" style="height: 30px;">
+        <a class="navbar-brand" href="/{{ back_to_previous }}">
+            <i class="fa fa-arrow-left" style="font-weight: 300"></i>
+            &nbsp;
+            <small style="font-size: 15px; font-weight: 500;">My Past Orders</small>
+        </a>
+    </div>
+</nav>
+
+<div class="container pt-2 pb-2 mt-2" style="background-color: crimson; color: #ffffff;">
+    <div class="container-fluid" style="text-align: center">
+        <b style="margin-bottom: 0;">Filter by Date</b>
+    </div>
+</div>
+<div class="container mt-3 order-search">
+    <form action="{% url 'App_main:search-order' %}" id="id-search-previous-order-form" method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="Order Date" name="order_date" id="id-input-date-field" onfocus="(this.type='date')">
+        <button id="id-search-for-previous-order" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
+    </form>
+</div>
+<div class="container running-order-div mt-5">
+    {% for running_order in running_orders %}
+        <div class="row order-id-status">
+            <div class="col-7" style="padding: 0">
+                <small>
+                    Order Status
+                </small>
+            </div>
+            <div class="col-5" style="padding: 0;">
+                {% if running_order.status == 'Rejected' %}
+                    <p class="status" style="color: darkred">{{ running_order.status }}</p>
+                {% else %}
+                    <p class="status" style="color: darkgreen">{{ running_order.status }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <small style="font-size: 11px;">
+                    {{ running_order.order_id }}
+                </small>
+                <div style="display: flex">
+                    {% for cart in running_order.order_items.all %}
+                        <p style="margin-bottom: 0; color: crimson;">{{ cart.medicineItem.name }}, &nbsp;</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-4">
+                <p>Total: ৳ {{ running_order.total_price }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<hr style="border: 1px dashed rebeccapurple">
+<div class="container running-order-div mt-5">
+    {% for done in done_orders %}
+        <div class="row order-id-status">
+            <div class="col-7" style="padding: 0">
+                <small>
+                    Order Status
+                </small>
+            </div>
+            <div class="col-5" style="padding: 0;">
+                {% if done.status == 'Rejected' %}
+                    <p class="status" style="color: darkred">{{ done.status }}</p>
+                {% else %}
+                    <p class="status" style="color: darkgreen">{{ done.status }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <small style="font-size: 11px;">
+                    {{ done.order_id }}
+                </small>
+                <div style="display: flex">
+                    {% for cart in done.order_items.all %}
+                        <p style="margin-bottom: 0; color: crimson;">{{ cart.medicineItem.name }}, &nbsp;</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-4">
+                <p>Total: ৳ {{ done.total_price }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<hr style="border: 1px dashed rebeccapurple">
+
+<div class="container running-order-div mt-5">
+    {% for this_order in thisDays_orders %}
+        <div class="row order-id-status">
+            <div class="col-7" style="padding: 0">
+                <small>
+                    Order Status
+                </small>
+            </div>
+            <div class="col-5" style="padding: 0;">
+                    <p class="status" style="color: deepskyblue">{{ this_order.status }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <small style="font-size: 11px;">
+                    {{ this_order.order_id }}
+                </small>
+                <div style="display: flex">
+                    {% for cart in this_order.order_items.all %}
+                        <p style="margin-bottom: 0; color: crimson;">{{ cart.medicineItem.name }}, &nbsp;</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-4">
+                <p>Total: ৳ {{ running_order.total_price }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+    let input_field = document.getElementById('id-input-date-field');
+    let input_search_btn = document.getElementById('id-search-for-previous-order');
+    input_field.addEventListener('change', function () {
+        input_search_btn.style.display = 'block';
+    })
+</script>
+</body>
+</html>

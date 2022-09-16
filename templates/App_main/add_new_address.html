@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Add New Address</title>
+    <style>
+        select, input, textarea {
+            border: 0;
+            outline: 0;
+            border-bottom: 1px solid crimson;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            font-size: 1.4rem;
+            color: #000000;
+        }
+
+        .home-container, .office-container {
+            border-left: 1px solid crimson;
+            border-right: 1px solid crimson;
+            border-radius: 10px;
+            text-align: center;
+            padding: 0;
+            margin: 5px;
+        }
+
+        .submit-btn-div {
+            margin-top: 30px;
+        }
+
+        .save-address {
+            background-color: crimson;
+            border-radius: 50px;
+            width: 100%;
+            color: #ffffff;
+        }
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-light bg-white" style="padding: 0;">
+    <div class="container-fluid" style="height: 30px;">
+        <a class="navbar-brand" href="{% url 'App_main:home' %}">
+            <i class="fa fa-arrow-left" style="font-weight: 300"></i>
+            &nbsp;
+            <small style="font-size: 15px; font-weight: 500;">Add Delivery Address</small>
+        </a>
+    </div>
+</nav>
+<hr>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <label for="id-city">
+                    Region
+                </label>
+            </div>
+            <div class="col">
+                <select name="city" id="id-city">
+                    <option>---- Select City ----</option>
+                    {% for city in cities %}
+                        <option value="{{ city.name }}">{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <p></p>
+        <p></p>
+
+        <div class="row">
+            <div class="col">
+                <label for="id-area">
+                    Area
+                </label>
+            </div>
+            <div class="col">
+                <select name="area" id="id-area">
+                    <option selected disabled="true">---- Select Area ----</option>
+                    {% for area in areas %}
+                        <option value="{{ area }}">{{ area }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <p></p>
+        <p></p>
+
+        <div class="row" style="display: flex">
+            <label>
+                House
+            </label>
+            <textarea name="house" id="id-house" rows="3"></textarea>
+        </div>
+
+        <p></p>
+        <p></p>
+
+        <div class="row">
+            <label>Address Type</label>
+            <div class="col home-container">
+                <label for="id-address-type-1">
+                    <input type="radio" value="Home" name="address-type" id="id-address-type-1"> <br>
+                    <i class="fa fa-home"></i> Home
+                </label>
+            </div>
+            <div class="col office-container">
+                <label for="id-address-type-2">
+                    <input type="radio" value="Office" name="address-type" id="id-address-type-2"> <br>
+                    <i class="fa fa-briefcase"></i> Office
+                </label>
+            </div>
+            <div class="col home-container">
+                <label for="id-address-type-3">
+                    <input type="radio" value="Home Town" name="address-type" id="id-address-type-3"> <br>
+                    <i class="fa fa-home"></i> Home Town
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="container submit-btn-div">
+        <div>
+            <button class="btn save-address">Save Address</button>
+        </div>
+    </div>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+</html>

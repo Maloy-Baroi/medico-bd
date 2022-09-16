@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Location Finding</title>
+
+    <style>
+        .add-address-btn {
+            padding: 10px;
+            color: #004f2e;
+            border: 1px dotted #004f2e;
+            background-color: rgba(0, 79, 46, 0.07);
+        }
+
+        .address-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .address-container div.left-side {
+            margin: 0 20px 0;
+            text-align: center;
+        }
+
+        .address-container i {
+        }
+
+        .address-container button {
+            background-color: #004f2e;
+            color: white;
+            border: none;
+            font-size: 10px;
+        }
+
+        .address-container p {
+            margin-bottom: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-light bg-white" style="padding: 0;">
+    <div class="container-fluid" style="height: 30px;">
+        <a class="navbar-brand" href="{% url 'App_main:home' %}">
+            <i class="fa fa-arrow-left" style="font-weight: 300"></i>
+            &nbsp;
+            <small style="font-size: 15px; font-weight: 500;">Addresses</small>
+        </a>
+    </div>
+</nav>
+<hr>
+
+<div class="container text-center">
+    <button class="btn add-address-btn" onclick="window.location.href='{% url "App_main:add-locations" %}'">
+        <i class="fa fa-plus"></i>
+        Add New Address
+    </button>
+</div>
+
+<hr>
+
+<div class="container">
+    {% for delivery_address in delivery_addresses %}
+        <div class="address-container">
+            <div class="left-side">
+                <i class="fa fa-map-marker"></i> <br>
+                <button>{{ delivery_address.address_type }}</button>
+            </div>
+            <div>
+                <p>{{ profile.fullName }}</p>
+                <p>{{ profile.phone_number }}</p>
+                <p>{{ delivery_address }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+</html>

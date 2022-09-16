@@ -1,0 +1,125 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Medic BD</title>
+    <style>
+        .old-price {
+            color: red;
+            font-size: 14px;
+        }
+
+        .price-text {
+            color: gray;
+            font-size: 14px;
+        }
+
+        .price {
+            color: #000000;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .description-header {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .description-div {
+            padding: 10px;
+            font-weight: 500;
+        }
+
+        .description-div article {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-light bg-white" style="padding: 0;">
+    <div class="container-fluid" style="height: 30px;">
+        <a class="navbar-brand" href="/{{ back_to_previous }}">
+            <i class="fa fa-arrow-left" style="font-weight: 300"></i>
+            &nbsp;
+            <small style="font-size: 15px; font-weight: 500;">{{ medicine.name }}</small>
+        </a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ image.0 }}" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ image.1 }}" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ image.2 }}" class="d-block w-100" alt="...">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row">
+        <h4>{{ medicine.name }}</h4>
+    </div>
+    <div class="row">
+        <small>{{ medicine.company }}</small>
+    </div>
+    <div class="row justify-content-center">
+        <div class="card" style="width: 95%;">
+            <form action="{% url 'App_main:add-to-cart' %}" method="post">
+                {% csrf_token %}
+                <div class="card-body">
+                    <s class="old-price">MRP &nbsp; {{ medicine.old_price }}</s> <br>
+                    <span class="price-text">Price</span> &nbsp; <span class="price">{{ medicine.price }}</span>
+                    <br>
+                    <input type="hidden" name="medicine_id" value="{{ medicine.id }}">
+                    <input class="form-control" type="number" min="1" max="{{ medicine.total_available }}"
+                           name="cart_quantity" placeholder="Quantity (Total Available: {{ medicine.total_available }})"
+                           required>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-success" style="border: 30px;">Add To Cart</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container description-div">
+    <div>
+        <p class="description-header">Description</p>
+    </div>
+    <div class="row">
+        <article>
+            {{ medicine.description }}
+        </article>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+</html>
